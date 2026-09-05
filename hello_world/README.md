@@ -289,3 +289,82 @@ README.md
 ## Author
 
 ALU Software Engineering Student
+
+
+
+
+alu-low_level_programming
+|   └── hello_world   
+|      └── 0-preprocessor  lines it contains "#!/bin/bash
+gcc -E $CFILE -o c
+"
+|      └── 1-compiler lines it contains "#!/bin/bash
+gcc -c $CFILE
+"
+|      └── 2-assembler  lines it contains"#!/bin/bash
+gcc -S $CFILE
+"
+|      └── 3-name  lines it contains"#!/bin/bash
+gcc $CFILE -o cisfun
+"
+|      └── 4-puts.c  lines it contains"#include<stdio.h>
+
+/**
+ *  main - starting point for program execution
+ * description - main will be used as function
+ *  Return: 0 (success)
+ */
+
+
+int main(void)
+
+{
+	puts("\"Programming is like building a multilingual puzzle");
+
+	return (0);
+}"
+|      └── 5-printf.c   lines it contains"#include<stdio.h>
+/**
+ *main - starting point for program execution
+ *printf - send formatted output to the screen
+ *Return: Always 0 (Success)
+ */
+int main(void)
+{
+	printf("with proper grammar, but the outcome is a piece of art,\n");
+	return (0);
+}"
+|      └── 6-size.c  lines it contains"#include <stdio.h>
+/**
+ * main - Entry point
+ *
+ * Return: Always 0 (Success)
+ */
+int main(void)
+{
+	printf("Size of a char: %d byte(s)\n", sizeof(char));
+	printf("Size of an int: %d byte(s)\n", sizeof(int));
+	printf("Size of a long int: %d byte(s)\n", sizeof(long int));
+	printf("Size of a long long int: %d byte(s)\n", sizeof(long long int));
+	printf("Size of a float: %d byte(s)\n", sizeof(float));
+	return (0);
+}"
+|      └── 100-intel   lines it contains"#!/bin/bash
+gcc -S -masm=intel "$CFILE" -o "${CFILE%.c}.s"
+"
+|      └── 101-quote.c   lines it contains"#include <unistd.h>
+
+/**
+ * main - Entry point
+ *
+ * Return: Always 1
+ */
+int main(void)
+{
+	char *str = "and that piece of art is useful\" - Dora Korpar, 2015-10-19\n";
+
+	write(2, str, 59);
+	return (1);
+}"
+|      └── README.md  
+└── README.md  
