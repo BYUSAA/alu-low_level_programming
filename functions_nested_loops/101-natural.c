@@ -1,7 +1,8 @@
+```c
 #include <stdio.h>
 
 /**
- * main - prints the sum of multiples of 3 or 5 below 1024
+ * main - computes the sum of multiples of 3 or 5 below 1024
  *
  * Return: Always 0.
  */
@@ -12,7 +13,7 @@ int main(void)
 
 	sum = 0;
 
-	for (i = 0; i < 1000; i++)
+	for (i = 0; i < 1024; i++)
 	{
 		if (i % 3 == 0 || i % 5 == 0)
 			sum += i;
@@ -22,3 +23,4 @@ int main(void)
 
 	return (0);
 }
+```
