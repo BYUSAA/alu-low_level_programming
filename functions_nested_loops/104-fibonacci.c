@@ -1,49 +1,65 @@
 #include <stdio.h>
 
 /**
+ * print_fib - prints a Fibonacci number from three chunks
+ * @a: high chunk
+ * @b: middle chunk
+ * @c: low chunk
+ *
+ * Return: Nothing.
+ */
+void print_fib(unsigned long a, unsigned long b, unsigned long c)
+{
+	if (a != 0)
+		printf("%lu%09lu%09lu", a, b, c);
+	else if (b != 0)
+		printf("%lu%09lu", b, c);
+	else
+		printf("%lu", c);
+}
+
+/**
  * main - prints the first 98 Fibonacci numbers
  *
  * Return: Always 0.
  */
 int main(void)
 {
-	unsigned long fib1_high;
-	unsigned long fib1_low;
-	unsigned long fib2_high;
-	unsigned long fib2_low;
-	unsigned long next_high;
-	unsigned long next_low;
-	unsigned long carry;
-	int count;
+	unsigned long a, b, c;
+	unsigned long d, e, f;
+	unsigned long x, y, z, carry;
+	int i;
 
-	fib1_high = 0;
-	fib1_low = 1;
-	fib2_high = 0;
-	fib2_low = 2;
+	a = 0;
+	b = 0;
+	c = 1;
+	d = 0;
+	e = 0;
+	f = 2;
 
-	printf("%lu, %lu", fib1_low, fib2_low);
+	printf("1, 2");
 
-	for (count = 3; count <= 98; count++)
+	for (i = 3; i <= 98; i++)
 	{
-		next_low = fib1_low + fib2_low;
-		carry = 0;
+		x = c + f;
+		carry = x / 1000000000;
+		x %= 1000000000;
 
-		if (next_low < fib1_low)
-			carry = 1;
+		y = b + e + carry;
+		carry = y / 1000000000;
+		y %= 1000000000;
 
-		next_high = fib1_high + fib2_high + carry;
+		z = a + d + carry;
 
 		printf(", ");
+		print_fib(z, y, x);
 
-		if (next_high == 0)
-			printf("%lu", next_low);
-		else
-			printf("%lu%016lu", next_high, next_low);
-
-		fib1_high = fib2_high;
-		fib1_low = fib2_low;
-		fib2_high = next_high;
-		fib2_low = next_low;
+		a = d;
+		b = e;
+		c = f;
+		d = z;
+		e = y;
+		f = x;
 	}
 
 	printf("\n");

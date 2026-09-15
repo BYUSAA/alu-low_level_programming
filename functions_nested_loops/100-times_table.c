@@ -18,6 +18,18 @@ void print_number(int n)
 }
 
 /**
+ * print_spaces - prints spaces
+ * @n: number of spaces
+ *
+ * Return: Nothing.
+ */
+void print_spaces(int n)
+{
+	while (n-- > 0)
+		_putchar(' ');
+}
+
+/**
  * print_times_table - prints the n times table
  * @n: size of the multiplication table
  *
@@ -39,11 +51,7 @@ void print_times_table(int n)
 		{
 			result = row * column;
 
-			if (column == 0)
-			{
-				print_number(result);
-			}
-			else
+			if (column != 0)
 			{
 				_putchar(',');
 				spaces = 3;
@@ -54,16 +62,11 @@ void print_times_table(int n)
 				if (result >= 100)
 					spaces--;
 
-				while (spaces > 0)
-				{
-					_putchar(' ');
-					spaces--;
-				}
-
-				print_number(result);
+				print_spaces(spaces);
 			}
-		}
 
+			print_number(result);
+		}
 		_putchar('\n');
 	}
 }
