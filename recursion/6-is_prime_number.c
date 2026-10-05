@@ -7,7 +7,7 @@
  *
  * Return: 1 if prime, otherwise 0
  */
-static int check_prime(int n, int divisor)
+int check_prime(int n, int divisor)
 {
 	if (divisor > n / divisor)
 	{
