@@ -8,7 +8,7 @@
  *
  * Return: 1 if palindrome, otherwise 0
  */
-static int palindrome_check(char *s, int left, int right)
+int palindrome_check(char *s, int left, int right)
 {
 	if (left >= right)
 	{
@@ -29,7 +29,7 @@ static int palindrome_check(char *s, int left, int right)
  *
  * Return: length of the string
  */
-static int get_length(char *s)
+int get_length(char *s)
 {
 	if (*s == '\0')
 	{
