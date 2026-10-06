@@ -5,13 +5,13 @@
  */
 void display_menu(void)
 {
-        printf("\n===== MOBILE MONEY SYSTEM =====\n");
-        printf("1. Deposit\n");
-        printf("2. Withdraw\n");
-        printf("3. Check Balance\n");
-        printf("4. Transaction Summary\n");
-        printf("5. Exit\n");
-        printf("Enter your choice: ");
+	printf("\n===== MOBILE MONEY SYSTEM =====\n");
+	printf("1. Deposit\n");
+	printf("2. Withdraw\n");
+	printf("3. Check Balance\n");
+	printf("4. Transaction Summary\n");
+	printf("5. Exit\n");
+	printf("Enter your choice: ");
 }
 
 /**
@@ -23,33 +23,33 @@ void display_menu(void)
  */
 int deposit(double *balance, int *deposits)
 {
-        double amount;
+	double amount;
 
-        printf("Enter deposit amount (RWF): ");
+	printf("Enter deposit amount (RWF): ");
 
-        if (scanf("%lf", &amount) != 1)
-        {
-                printf("Invalid amount. Deposit cancelled.\n");
+	if (scanf("%lf", &amount) != 1)
+	{
+		printf("Invalid amount. Deposit cancelled.\n");
 
-                while (getchar() != '\n')
-                        ;
+		while (getchar() != '\n')
+			;
 
-                return (0);
-        }
+		return (0);
+	}
 
-        if (amount <= 0)
-        {
-                printf("Deposit failed: amount must be greater than 0.\n");
-                return (0);
-        }
+	if (amount <= 0)
+	{
+		printf("Deposit failed: amount must be greater than 0.\n");
+		return (0);
+	}
 
-        *balance += amount;
-        (*deposits)++;
+	*balance += amount;
+	(*deposits)++;
 
-        printf("Deposit successful: %.0f RWF\n", amount);
-        printf("New balance: %.0f RWF\n", *balance);
+	printf("Deposit successful: %.0f RWF\n", amount);
+	printf("New balance: %.0f RWF\n", *balance);
 
-        return (1);
+	return (1);
 }
 
 /**
@@ -61,64 +61,57 @@ int deposit(double *balance, int *deposits)
  */
 int withdraw(double *balance, int *withdrawals)
 {
-        double amount;
+	double amount;
 
-        printf("Enter withdrawal amount (RWF): ");
+	printf("Enter withdrawal amount (RWF): ");
 
-        if (scanf("%lf", &amount) != 1)
-        {
-                printf("Invalid amount. Withdrawal cancelled.\n");
+	if (scanf("%lf", &amount) != 1)
+	{
+		printf("Invalid amount. Withdrawal cancelled.\n");
 
-                while (getchar() != '\n')
-                        ;
+		while (getchar() != '\n')
+			;
 
-                return (0);
-        }
+		return (0);
+	}
 
-        if (amount <= 0)
-        {
-                printf("Withdrawal failed: amount must be greater than 0.\n");
-                return (0);
-        }
+	if (amount <= 0)
+	{
+		printf("Withdrawal failed: amount must be greater than 0.\n");
+		return (0);
+	}
 
-        if (amount > *balance)
-        {
-                printf("Withdrawal failed: insufficient balance.\n");
-                printf("Available balance: %.0f RWF\n", *balance);
-                return (0);
-        }
+	if (amount > *balance)
+	{
+		printf("Withdrawal failed: insufficient balance.\n");
+		printf("Available balance: %.0f RWF\n", *balance);
+		return (0);
+	}
 
-        *balance -= amount;
-        (*withdrawals)++;
+	*balance -= amount;
+	(*withdrawals)++;
 
-        printf("Withdrawal successful: %.0f RWF\n", amount);
-        printf("Remaining balance: %.0f RWF\n", *balance);
+	printf("Withdrawal successful: %.0f RWF\n", amount);
+	printf("Remaining balance: %.0f RWF\n", *balance);
 
-        return (1);
+	return (1);
 }
 
 /**
- * display_balance - displays the current balance
- * @balance: current balance
- */
-void display_balance(double balance)
-{
-        printf("\n===== BALANCE =====\n");
-        printf("Current balance: %.0f RWF\n", balance);
-}
-
-/**
- * display_summary - displays the transaction summary
+ * display_report - displays balance and transaction summary
  * @balance: current balance
  * @deposits: number of successful deposits
  * @withdrawals: number of successful withdrawals
  */
-void display_summary(double balance, int deposits, int withdrawals)
+void display_report(double balance, int deposits, int withdrawals)
 {
-        printf("\n===== TRANSACTION SUMMARY =====\n");
-        printf("Successful deposits: %d\n", deposits);
-        printf("Successful withdrawals: %d\n", withdrawals);
-        printf("Current balance: %.0f RWF\n", balance);
+	printf("\n===== BALANCE =====\n");
+	printf("Current balance: %.0f RWF\n", balance);
+
+	printf("\n===== TRANSACTION SUMMARY =====\n");
+	printf("Successful deposits: %d\n", deposits);
+	printf("Successful withdrawals: %d\n", withdrawals);
+	printf("Current balance: %.0f RWF\n", balance);
 }
 
 /**
@@ -128,50 +121,51 @@ void display_summary(double balance, int deposits, int withdrawals)
  */
 int main(void)
 {
-        double balance = 0.0;
-        int choice;
-        int deposits = 0;
-        int withdrawals = 0;
+	double balance = 0.0;
+	int choice;
+	int deposits = 0;
+	int withdrawals = 0;
 
-        while (1)
-        {
-                display_menu();
+	while (1)
+	{
+		display_menu();
 
-                if (scanf("%d", &choice) != 1)
-                {
-                        printf("Invalid input. Please enter a number from 1 to 5.\n");
+		if (scanf("%d", &choice) != 1)
+		{
+			printf("Invalid input. Please enter a number from 1 to 5.\n");
 
-                        while (getchar() != '\n')
-                                ;
+			while (getchar() != '\n')
+				;
 
-                        continue;
-                }
+			continue;
+		}
 
-                switch (choice)
-                {
-                case 1:
-                        deposit(&balance, &deposits);
-                        break;
+		switch (choice)
+		{
+		case 1:
+			deposit(&balance, &deposits);
+			break;
 
-                case 2:
-                        withdraw(&balance, &withdrawals);
-                        break;
+		case 2:
+			withdraw(&balance, &withdrawals);
+			break;
 
-                case 3:
-                        display_balance(balance);
-                        break;
+		case 3:
+			printf("\n===== BALANCE =====\n");
+			printf("Current balance: %.0f RWF\n", balance);
+			break;
 
-                case 4:
-                        display_summary(balance, deposits, withdrawals);
-                        break;
+		case 4:
+			display_report(balance, deposits, withdrawals);
+			break;
 
-                case 5:
-                        printf("\nThank you for using the Mobile Money System.\n");
-                        printf("System terminated.\n");
-                        return (0);
+		case 5:
+			printf("\nThank you for using the Mobile Money System.\n");
+			printf("System terminated.\n");
+			return (0);
 
-                default:
-                        printf("Invalid choice. Please select between 1 and 5.\n");
-                }
-        }
+		default:
+			printf("Invalid choice. Please select between 1 and 5.\n");
+		}
+	}
 }
