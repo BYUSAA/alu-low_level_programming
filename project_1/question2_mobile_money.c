@@ -30,10 +30,8 @@ int deposit(double *balance, int *deposits)
 	if (scanf("%lf", &amount) != 1)
 	{
 		printf("Invalid amount. Deposit cancelled.\n");
-
 		while (getchar() != '\n')
 			;
-
 		return (0);
 	}
 
@@ -68,10 +66,8 @@ int withdraw(double *balance, int *withdrawals)
 	if (scanf("%lf", &amount) != 1)
 	{
 		printf("Invalid amount. Withdrawal cancelled.\n");
-
 		while (getchar() != '\n')
 			;
-
 		return (0);
 	}
 
@@ -107,13 +103,11 @@ void display_report(double balance, int deposits, int withdrawals)
 {
 	printf("\n===== BALANCE =====\n");
 	printf("Current balance: %.0f RWF\n", balance);
-
 	printf("\n===== TRANSACTION SUMMARY =====\n");
 	printf("Successful deposits: %d\n", deposits);
 	printf("Successful withdrawals: %d\n", withdrawals);
 	printf("Current balance: %.0f RWF\n", balance);
 }
-
 /**
  * main - mobile money transaction processing system
  *
@@ -129,14 +123,11 @@ int main(void)
 	while (1)
 	{
 		display_menu();
-
 		if (scanf("%d", &choice) != 1)
 		{
-			printf("Invalid input. Please enter a number from 1 to 5.\n");
-
+			printf("Invalid input. Enter a number from 1 to 5.\n");
 			while (getchar() != '\n')
 				;
-
 			continue;
 		}
 
@@ -145,25 +136,17 @@ int main(void)
 		case 1:
 			deposit(&balance, &deposits);
 			break;
-
 		case 2:
 			withdraw(&balance, &withdrawals);
 			break;
-
 		case 3:
-			printf("\n===== BALANCE =====\n");
-			printf("Current balance: %.0f RWF\n", balance);
-			break;
-
 		case 4:
 			display_report(balance, deposits, withdrawals);
 			break;
-
 		case 5:
 			printf("\nThank you for using the Mobile Money System.\n");
 			printf("System terminated.\n");
 			return (0);
-
 		default:
 			printf("Invalid choice. Please select between 1 and 5.\n");
 		}
