@@ -98,11 +98,17 @@ int withdraw(double *balance, int *withdrawals)
  * @balance: current balance
  * @deposits: number of successful deposits
  * @withdrawals: number of successful withdrawals
+ * @choice: selects balance or transaction summary
  */
-void display_report(double balance, int deposits, int withdrawals)
+void display_report(double balance, int deposits, int withdrawals, int choice)
 {
-	printf("\n===== BALANCE =====\n");
-	printf("Current balance: %.0f RWF\n", balance);
+	if (choice == 3)
+	{
+		printf("\n===== BALANCE =====\n");
+		printf("Current balance: %.0f RWF\n", balance);
+		return;
+	}
+
 	printf("\n===== TRANSACTION SUMMARY =====\n");
 	printf("Successful deposits: %d\n", deposits);
 	printf("Successful withdrawals: %d\n", withdrawals);
@@ -116,9 +122,7 @@ void display_report(double balance, int deposits, int withdrawals)
 int main(void)
 {
 	double balance = 0.0;
-	int choice;
-	int deposits = 0;
-	int withdrawals = 0;
+	int choice, deposits = 0, withdrawals = 0;
 
 	while (1)
 	{
@@ -140,8 +144,10 @@ int main(void)
 			withdraw(&balance, &withdrawals);
 			break;
 		case 3:
+			display_report(balance, deposits, withdrawals, 3);
+			break;
 		case 4:
-			display_report(balance, deposits, withdrawals);
+			display_report(balance, deposits, withdrawals, 4);
 			break;
 		case 5:
 			printf("\nThank you for using the Mobile Money System.\n");
