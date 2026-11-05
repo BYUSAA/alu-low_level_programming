@@ -9,8 +9,6 @@ gcc -std=c99 -Wall -Wextra -Werror -pedantic main.c -o text_mining
 ./text_mining
 ```
 
-Replace the student ID placeholder in `main.c`.
-
 ## Input
 Paste or type a paragraph. Enter a single period (`.`) on its own line to finish input. The program then builds its word statistics and displays the analysis menu.
 
