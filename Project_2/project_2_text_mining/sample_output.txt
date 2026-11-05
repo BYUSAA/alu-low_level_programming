@@ -1,0 +1,442 @@
+============================================================
+Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Project: Dynamic Text Mining and Linguistic Pattern Analyzer
+Source: A Tale of Two Cities, Charles Dickens (1859, public domain)
+Custom Analysis: Lexical Diversity Score
+============================================================
+Paste/type your paragraph. Enter a single period (.) on its own line to finish.
+> > > > > 
+Input contains 290 words and 151 distinct words.
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: Total words: 290
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: Longest word(s), length 14:
+  supernaturally
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: Most frequent word(s), frequency 24:
+  the
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: 
+WORD                      FREQUENCY
+------------------------------------
+it                        12
+was                       13
+the                       24
+best                      1
+of                        21
+times                     2
+worst                     1
+age                       2
+wisdom                    1
+foolishness               1
+epoch                     2
+belief                    1
+incredulity               1
+season                    2
+light                     1
+darkness                  1
+spring                    1
+hope                      1
+winter                    1
+despair                   1
+we                        4
+had                       5
+everything                1
+before                    2
+us                        2
+nothing                   1
+were                      7
+all                       2
+going                     2
+direct                    2
+to                        3
+heaven                    1
+other                     1
+way                       1
+in                        6
+short                     1
+period                    3
+so                        1
+far                       1
+like                      1
+present                   1
+that                      4
+some                      1
+its                       3
+noisiest                  1
+authoritie                1
+s                         1
+insisted                  1
+on                        3
+being                     1
+received                  1
+for                       4
+good                      1
+or                        1
+evil                      1
+superlative               1
+degree                    1
+comparison                1
+only                      2
+there                     2
+a                         10
+king                      2
+with                      4
+large                     2
+jaw                       2
+and                       6
+queen                     2
+plain                     1
+face                      2
+throne                    2
+england                   2
+fair                      1
+france                    1
+both                      1
+countries                 1
+clearer                   1
+than                      1
+crystal                   1
+lords                     1
+state                     1
+preserves                 1
+loaves                    1
+fishes                    1
+things                    1
+general                   1
+settled                   1
+ever                      1
+year                      2
+our                       1
+lord                      1
+one                       1
+thousand                  1
+seven                     1
+hundred                   1
+seventy                   1
+five                      2
+sp                        1
+iritual                   1
+revelations               1
+conceded                  1
+at                        2
+favoured                  1
+as                        2
+this                      2
+mrs                       1
+southcott                 1
+recently                  1
+attained                  1
+her                       1
+twentieth                 1
+blessed                   1
+birthday                  1
+whom                      1
+prophetic                 1
+private                   1
+life                      1
+guards                    1
+heralded                  1
+sublime                   1
+appearance                1
+by                        1
+announcing                1
+arrangements              1
+made                      1
+swallowing                1
+up                        1
+london                    1
+westminster               1
+even                      1
+cock                      1
+lane                      1
+ghost                     1
+been                      1
+laid                      1
+round                     1
+dozen                     1
+years                     1
+after                     1
+rapping                   1
+out                       2
+messages                  1
+spirits                   1
+very                      1
+last                      1
+past                      1
+supernaturally            1
+deficient                 1
+origi                     1
+nality                    1
+rapped                    1
+theirs                    1
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: 1. Alphabetical (A-Z)
+2. Frequency (highest first)
+Sort choice: Word statistics sorted.
+
+WORD                      FREQUENCY
+------------------------------------
+a                         10
+after                     1
+age                       2
+all                       2
+and                       6
+announcing                1
+appearance                1
+arrangements              1
+as                        2
+at                        2
+attained                  1
+authoritie                1
+been                      1
+before                    2
+being                     1
+belief                    1
+best                      1
+birthday                  1
+blessed                   1
+both                      1
+by                        1
+clearer                   1
+cock                      1
+comparison                1
+conceded                  1
+countries                 1
+crystal                   1
+darkness                  1
+deficient                 1
+degree                    1
+despair                   1
+direct                    2
+dozen                     1
+england                   2
+epoch                     2
+even                      1
+ever                      1
+everything                1
+evil                      1
+face                      2
+fair                      1
+far                       1
+favoured                  1
+fishes                    1
+five                      2
+foolishness               1
+for                       4
+france                    1
+general                   1
+ghost                     1
+going                     2
+good                      1
+guards                    1
+had                       5
+heaven                    1
+her                       1
+heralded                  1
+hope                      1
+hundred                   1
+in                        6
+incredulity               1
+insisted                  1
+iritual                   1
+it                        12
+its                       3
+jaw                       2
+king                      2
+laid                      1
+lane                      1
+large                     2
+last                      1
+life                      1
+light                     1
+like                      1
+loaves                    1
+london                    1
+lord                      1
+lords                     1
+made                      1
+messages                  1
+mrs                       1
+nality                    1
+noisiest                  1
+nothing                   1
+of                        21
+on                        3
+one                       1
+only                      2
+or                        1
+origi                     1
+other                     1
+our                       1
+out                       2
+past                      1
+period                    3
+plain                     1
+present                   1
+preserves                 1
+private                   1
+prophetic                 1
+queen                     2
+rapped                    1
+rapping                   1
+received                  1
+recently                  1
+revelations               1
+round                     1
+s                         1
+season                    2
+settled                   1
+seven                     1
+seventy                   1
+short                     1
+so                        1
+some                      1
+southcott                 1
+sp                        1
+spirits                   1
+spring                    1
+state                     1
+sublime                   1
+superlative               1
+supernaturally            1
+swallowing                1
+than                      1
+that                      4
+the                       24
+theirs                    1
+there                     2
+things                    1
+this                      2
+thousand                  1
+throne                    2
+times                     2
+to                        3
+twentieth                 1
+up                        1
+us                        2
+very                      1
+was                       13
+way                       1
+we                        4
+were                      7
+westminster               1
+whom                      1
+winter                    1
+wisdom                    1
+with                      4
+worst                     1
+year                      2
+years                     1
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: Enter word to search: 'best' appears 1 time(s).
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: 
+========== TEXT SUMMARY ==========
+Total words: 290
+Distinct words: 151
+Average word length: 4.26 characters
+Longest word: supernaturally (14 characters)
+Most frequent word: the (24 occurrence(s))
+Lexical Diversity Score: 52.07%
+==================================
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: 
+MEMORY INSPECTION
+Text buffer address: 0x7fb735e26000
+Word statistics array: 0x7fb735e2d000
+Selected word-stat entry: 0x7fb735e2d000
+The addresses identify the allocated text buffer, the first
+word-statistics element, and a selected entry in that array.
+
+ANALYSIS MENU
+1. Count words
+2. Find longest word
+3. Find most frequent word
+4. Display word statistics
+5. Sort word statistics
+6. Search for a word
+7. Generate text summary
+8. Inspect memory addresses
+9. Exit
+Choose an option: Allocated text and statistics memory released. Goodbye.
