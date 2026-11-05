@@ -1,5 +1,5 @@
 ============================================================
-Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Student ID: 1001
 Project: Dynamic Text Mining and Linguistic Pattern Analyzer
 Source: A Tale of Two Cities, Charles Dickens (1859, public domain)
 Custom Analysis: Lexical Diversity Score
