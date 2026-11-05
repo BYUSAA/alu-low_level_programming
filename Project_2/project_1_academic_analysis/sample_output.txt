@@ -1,0 +1,118 @@
+============================================================
+Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Project: Dynamic Academic Performance and Risk Analysis Engine
+Custom Analysis: Academic Risk Index (ARI)
+============================================================
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: 
+ID       NAME                      COURSE                       GRADE
+-----------------------------------------------------------------------
+1001     Aline Uwase               Programming in C            86.50
+1002     Eric Niyonzima            Data Structures             72.00
+1003     Diane Mukamana            Mobile Development          91.00
+1004     Patrick Habimana          Programming in C            48.50
+1005     Grace Ingabire            Linux Programming           67.00
+1006     Kevin Mugisha             Data Structures             55.50
+1007     Olive Uwera               Mobile Development          78.00
+1008     Samuel Nkurunziza         Linux Programming           39.00
+1009     Alice Mutoni              Programming in C            95.00
+1010     David Rukundo             Data Structures             62.50
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: Average grade: 69.50
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: Top student: Alice Mutoni (ID 1009), Programming in C, grade 95.00
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: 
+ACADEMIC RISK INDEX
+Individual formula: ARI = 100 - grade
+High risk (grade < 50): 2
+Moderate risk (50 <= grade < 70): 3
+Good standing (70-100): 5
+Average class ARI: 30.50/100
+Higher ARI means greater grade-based academic risk.
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: 
+========== ACADEMIC SUMMARY ==========
+Total records: 10
+Average: 69.50
+Highest: 95.00
+Lowest: 39.00
+Passed (>=50): 8
+Below pass mark: 2
+
+ACADEMIC RISK INDEX
+Individual formula: ARI = 100 - grade
+High risk (grade < 50): 2
+Moderate risk (50 <= grade < 70): 3
+Good standing (70-100): 5
+Average class ARI: 30.50/100
+Higher ARI means greater grade-based academic risk.
+
+MAIN MENU
+1. Add student
+2. Display students
+3. Sort students
+4. Calculate average
+5. Find top student
+6. Search student
+7. Remove student
+8. Custom academic analysis
+9. Summary report
+10. Exit
+Choose an option: Exiting program.
+Dynamic memory released. Goodbye.
