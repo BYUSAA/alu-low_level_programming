@@ -1,0 +1,136 @@
+============================================================
+Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Project: Dynamic IoT Event Monitoring and Callback Engine
+Custom Callback: Rapid Temperature Change Detector
+============================================================
+Operating thresholds: Temperature 18-30 C; Pressure 950-1050 kPa; Battery 3.3-4.2 V.
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: Device ID: Device name: Device type:
+1. Temperature sensor
+2. Pressure sensor
+3. Battery voltage monitor
+Type: Registered Temperature device. Total devices: 1
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: Device ID: Device name: Device type:
+1. Temperature sensor
+2. Pressure sensor
+3. Battery voltage monitor
+Type: Registered Pressure device. Total devices: 2
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: Device ID: Device name: Device type:
+1. Temperature sensor
+2. Pressure sensor
+3. Battery voltage monitor
+Type: Registered Battery device. Total devices: 3
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: 
+Simulating 10 readings across registered devices.
+Reading 1: ALERT: Device 2001 (Room Temperature Sensor), 39.00 C; expected 18.0 to 30.0 C; reason: temperature outside normal range; callback: temperature_monitor
+Reading 2: NORMAL: Device 2002 (Water Pressure Sensor), 1012.00 kPa; callback: pressure_monitor
+Reading 3: NORMAL: Device 2003 (Battery Monitor), 3.70 V; callback: battery_monitor
+Reading 4: NORMAL: Device 2001 (Room Temperature Sensor), 28.00 C; callback: temperature_monitor
+CUSTOM CALLBACK ALERT: Device 2001 (Room Temperature Sensor) changed from 39.00 C to 28.00 C; change exceeded 5.00 C. Callback: rapid_temperature_change_detector
+Reading 5: NORMAL: Device 2002 (Water Pressure Sensor), 1020.00 kPa; callback: pressure_monitor
+Reading 6: NORMAL: Device 2003 (Battery Monitor), 3.80 V; callback: battery_monitor
+Reading 7: NORMAL: Device 2001 (Room Temperature Sensor), 26.00 C; callback: temperature_monitor
+Reading 8: ALERT: Device 2002 (Water Pressure Sensor), 1082.00 kPa; expected 950 to 1050 kPa; reason: pressure outside normal range; callback: pressure_monitor
+Reading 9: ALERT: Device 2003 (Battery Monitor), 2.80 V; expected 3.3 to 4.2 V; reason: battery voltage outside normal range; callback: battery_monitor
+Reading 10: NORMAL: Device 2001 (Room Temperature Sensor), 22.00 C; callback: temperature_monitor
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: 
+ID     NAME                 TYPE           LATEST READING     STATUS
+--------------------------------------------------------------------------
+2001   Room Temperature Sen Temperature    22.00              C NORMAL
+2002   Water Pressure Senso Pressure       1082               kPa ALERT
+2003   Battery Monitor      Battery        2.80               V ALERT
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: 
+CURRENT DEVICE ALERTS
+Device 2002 (Water Pressure Sensor) is currently in ALERT status.
+Device 2003 (Battery Monitor) is currently in ALERT status.
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: 
+========== IOT MONITORING SUMMARY ==========
+Registered devices: 3
+Readings processed: 10
+Normal readings: 7
+Abnormal readings: 3
+Temperature alerts: 1
+Pressure alerts: 1
+Battery alerts: 1
+Rapid temperature change alerts: 1
+============================================
+
+IOT MONITOR MENU
+1. Register a device
+2. Display all devices
+3. Remove a device
+4. Generate one reading per device
+5. Simulate at least 10 readings
+6. Display detected alerts
+7. Generate monitoring summary
+8. Exit
+Choose an option: Device memory released. Goodbye.
