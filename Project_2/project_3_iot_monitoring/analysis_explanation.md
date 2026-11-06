@@ -1,26 +1,33 @@
 # Custom Callback — Rapid Temperature Change Detector
 
 ## Purpose
-This custom monitoring rule detects sudden changes between consecutive readings from the same temperature device. A reading can be within the normal temperature range and still be suspicious if it changes too quickly.
+
+This callback detects a sudden change between consecutive readings from the same temperature sensor. A temperature can be within its normal operating range and still be unusual if it changes too quickly.
 
 ## Formula
-`change = absolute(current_temperature - previous_temperature)`
+
+\`change = |current temperature - previous temperature|\`
 
 ## Trigger condition
-The callback reports a rapid-change alert when:
 
-`change > 5.0 °C`
-
-The first temperature reading establishes the baseline and does not trigger this rule because there is no previous reading to compare.
+The callback triggers when \`change > 5.0 °C\`. The first reading establishes a baseline and is not compared with an earlier reading.
 
 ## Algorithm
-1. Read the current temperature from the device's active union member.
-2. If a previous temperature exists, calculate the absolute difference.
-3. If the difference exceeds 5.0 °C, increment the custom-alert counter and report the previous and current values.
-4. Store the current temperature as the previous reading for the next cycle.
 
-## Callback integration
-The temperature device is processed through `temperature_monitor`. That callback then dispatches `rapid_temperature_change_detector` through a second function pointer using the same callback signature. This makes the custom monitoring rule a separate callback rather than merely an extra condition inside the standard temperature check.
+1. Read the current temperature from the temperature member of the device's union.
+2. Check whether a previous temperature reading exists.
+3. Calculate the absolute difference between the current and previous values.
+4. If the difference exceeds 5.0 °C, increment the custom-alert counter, print both values and the threshold, and set the device status to \`ALERT\`.
+5. Save the current reading for the next comparison.
+
+## Function-pointer integration
+
+The temperature reading is processed by \`temperature_monitor\`, which dispatches \`rapid_temperature_change_detector\` through a \`DeviceCallback\` function pointer. The custom rule is a separate callback, not merely another condition inside the standard temperature-range check.
+
+## Counting and status
+
+Normal/abnormal totals describe whether a reading falls outside the configured operating range. Rapid-change alerts are counted separately because they measure a different condition. A device is marked \`ALERT\` when either the standard range check or custom check detects a problem. A later normal reading can return its status to \`NORMAL\`.
 
 ## Limitations
-The simulation uses a simple fixed threshold and simulated readings. Real deployments would need sensor-specific calibration, sampling intervals, and environmental context.
+
+This coursework simulation uses a fixed threshold and generated readings. A real monitoring system would need sensor calibration, sampling intervals, noise filtering, and environmental context.
