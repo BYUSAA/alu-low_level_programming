@@ -1,5 +1,7 @@
+NOTE: This console transcript shows the initial dataset and analysis examples. It does not show every menu operation; use the smoke-test log and your own interactive run for add/remove evidence.
+
 ============================================================
-Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Student ID: 811201785
 Project: Dynamic Academic Performance and Risk Analysis Engine
 Custom Analysis: Academic Risk Index (ARI)
 ============================================================
