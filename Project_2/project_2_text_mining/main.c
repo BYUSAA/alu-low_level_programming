@@ -12,7 +12,7 @@
 #include <ctype.h>
 #include <errno.h>
 
-#define STUDENT_ID "REPLACE_WITH_YOUR_STUDENT_ID"
+#define STUDENT_ID "811201785"
 #define WORD_SIZE 40
 
 typedef struct wordStat
@@ -61,28 +61,70 @@ static int append_text(char **text, size_t *length, size_t *capacity,
 
 static int read_text(TextData *data)
 {
-    char line[512];
-    size_t capacity = 0;
+    char *line = NULL;
+    size_t line_length = 0;
+    size_t line_capacity = 0;
+    size_t text_capacity = 0;
+    size_t new_capacity;
+    char *temporary;
+    int character;
 
     printf("Paste/type your paragraph. Enter a single period (.) on its own line to finish.\n");
     data->text = NULL;
     data->text_length = 0;
-    while (1)
+
+    /* Read complete lines dynamically so very long lines are not split. */
+    while ((character = getchar()) != EOF)
     {
-        printf("> ");
-        if (fgets(line, sizeof(line), stdin) == NULL)
-            break;
-        line[strcspn(line, "\n")] = '\0';
-        if (strcmp(line, ".") == 0)
-            break;
-        if (!append_text(&data->text, &data->text_length, &capacity, line))
+        if (character == '\r')
+            continue;
+        if (character == '\n')
         {
-            fprintf(stderr, "Unable to grow the text buffer.\n");
-            free(data->text);
-            data->text = NULL;
-            return 0;
+            if (line_length == 1 && line[0] == '.')
+                break;
+            if (line_capacity == 0)
+            {
+                line = malloc(1);
+                if (line == NULL)
+                    goto allocation_error;
+                line_capacity = 1;
+            }
+            line[line_length] = '\0';
+            if (!append_text(&data->text, &data->text_length,
+                             &text_capacity, line))
+                goto allocation_error;
+            line_length = 0;
+            continue;
         }
+
+        if (line_length + 1 >= line_capacity)
+        {
+            new_capacity = (line_capacity == 0) ? 128 : line_capacity * 2;
+            temporary = realloc(line, new_capacity);
+            if (temporary == NULL)
+                goto allocation_error;
+            line = temporary;
+            line_capacity = new_capacity;
+        }
+        line[line_length++] = (char)character;
     }
+
+    if (line_length > 0 && !(line_length == 1 && line[0] == '.'))
+    {
+        if (line_capacity == 0)
+        {
+            line = malloc(1);
+            if (line == NULL)
+                goto allocation_error;
+            line_capacity = 1;
+        }
+        line[line_length] = '\0';
+        if (!append_text(&data->text, &data->text_length,
+                         &text_capacity, line))
+            goto allocation_error;
+    }
+    free(line);
+
     if (data->text == NULL)
     {
         data->text = malloc(1);
@@ -91,6 +133,14 @@ static int read_text(TextData *data)
         data->text[0] = '\0';
     }
     return 1;
+
+allocation_error:
+    fprintf(stderr, "Unable to grow the input or text buffer.\n");
+    free(line);
+    free(data->text);
+    data->text = NULL;
+    data->text_length = 0;
+    return 0;
 }
 
 static int reserve_stats(TextData *data, size_t needed)
@@ -111,7 +161,8 @@ static int reserve_stats(TextData *data, size_t needed)
     return 1;
 }
 
-static void normalize_and_store(TextData *data, const char *start, size_t length)
+static int normalize_and_store(TextData *data, const char *start,
+                                size_t length)
 {
     char word[WORD_SIZE];
     size_t i;
@@ -119,7 +170,7 @@ static void normalize_and_store(TextData *data, const char *start, size_t length
     size_t index;
 
     if (length == 0)
-        return;
+        return 1;
     if (stored_length >= WORD_SIZE)
         stored_length = WORD_SIZE - 1;
     for (i = 0; i < stored_length; i++)
@@ -132,18 +183,19 @@ static void normalize_and_store(TextData *data, const char *start, size_t length
         {
             data->stats[index].count++;
             data->total_words++;
-            return;
+            return 1;
         }
     }
     if (!reserve_stats(data, data->distinct_words + 1))
     {
         fprintf(stderr, "Unable to grow word statistics array.\n");
-        return;
+        return 0;
     }
     strcpy(data->stats[data->distinct_words].name, word);
     data->stats[data->distinct_words].count = 1;
     data->distinct_words++;
     data->total_words++;
+    return 1;
 }
 
 static int build_statistics(TextData *data)
@@ -167,8 +219,7 @@ static int build_statistics(TextData *data)
         while (*ptr != '\0' && isalpha((unsigned char)*ptr))
             ptr++;
         length = (size_t)(ptr - start);
-        normalize_and_store(data, start, length);
-        if (data->distinct_words > 0 && data->stats == NULL)
+        if (!normalize_and_store(data, start, length))
             return 0;
     }
     return 1;

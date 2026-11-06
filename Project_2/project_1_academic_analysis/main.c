@@ -7,7 +7,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define STUDENT_ID "REPLACE_WITH_YOUR_STUDENT_ID"
+#define STUDENT_ID "811201785"
 #define NAME_SIZE 80
 #define COURSE_SIZE 80
 #define PASS_MARK 50.0
