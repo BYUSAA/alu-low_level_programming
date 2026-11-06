@@ -1,5 +1,7 @@
+NOTE: This console transcript predates the dynamic full-line input fix. Re-run the current source before using it as final demonstration evidence.
+
 ============================================================
-Student ID: 1001
+Student ID: 811201785
 Project: Dynamic Text Mining and Linguistic Pattern Analyzer
 Source: A Tale of Two Cities, Charles Dickens (1859, public domain)
 Custom Analysis: Lexical Diversity Score
