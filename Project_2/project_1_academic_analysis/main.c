@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <math.h>
 
 #define STUDENT_ID "811201785"
 #define NAME_SIZE 80
@@ -88,7 +89,7 @@ static int read_grade(const char *prompt, double *value)
             continue;
         errno = 0;
         parsed = strtod(buffer, &end);
-        if (buffer[0] == '\0' || *end != '\0' || errno == ERANGE ||
+        if (buffer[0] == '\0' || *end != '\0' || errno == ERANGE || !isfinite(parsed) ||
             parsed < 0.0 || parsed > 100.0)
         {
             printf("Grade must be a number from 0 to 100.\n");
