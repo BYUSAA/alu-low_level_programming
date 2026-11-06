@@ -278,26 +278,43 @@ static void record_result(Device *device, MonitorStats *stats,
     }
 }
 
+static void rapid_temperature_change_detector(Device *device,
+                                               MonitorStats *stats)
+{
+    float current = device->reading.temperature;
+    float difference;
+
+    if (device->has_previous_temperature)
+    {
+        difference = current - device->previous_temperature;
+        if (difference < 0.0f)
+            difference = -difference;
+        if (difference > RAPID_CHANGE_LIMIT)
+        {
+            stats->rapid_change_alerts++;
+            printf("CUSTOM CALLBACK ALERT: Device %d (%s) changed from %.2f C "
+                   "to %.2f C; absolute change %.2f C exceeded %.2f C. "
+                   "Callback: rapid_temperature_change_detector\n",
+                   device->id, device->name, device->previous_temperature,
+                   current, difference, RAPID_CHANGE_LIMIT);
+        }
+    }
+    device->previous_temperature = current;
+    device->has_previous_temperature = 1;
+}
+
 static void temperature_monitor(Device *device, MonitorStats *stats)
 {
     float value = device->reading.temperature;
     int abnormal = (value < TEMP_MIN || value > TEMP_MAX);
+    DeviceCallback custom_callback = rapid_temperature_change_detector;
 
     record_result(device, stats, abnormal, "temperature_monitor",
                   "temperature outside normal range", "18.0 to 30.0 C",
                   value, "C");
-    if (device->has_previous_temperature &&
-        (value - device->previous_temperature > RAPID_CHANGE_LIMIT ||
-         device->previous_temperature - value > RAPID_CHANGE_LIMIT))
-    {
-        stats->rapid_change_alerts++;
-        printf("CUSTOM CALLBACK ALERT: Device %d (%s) changed from %.2f C to %.2f C; "
-               "change exceeded %.2f C. Callback: rapid_temperature_change_detector\n",
-               device->id, device->name, device->previous_temperature,
-               value, RAPID_CHANGE_LIMIT);
-    }
-    device->previous_temperature = value;
-    device->has_previous_temperature = 1;
+
+    /* Dispatch the original custom rule through a function pointer. */
+    custom_callback(device, stats);
 }
 
 static void pressure_monitor(Device *device, MonitorStats *stats)
