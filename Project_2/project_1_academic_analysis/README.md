@@ -1,31 +1,36 @@
 # Project 1 — Dynamic Academic Performance and Risk Analysis Engine
 
-## Description
-A menu-driven C program that manages student records, sorts and searches them, calculates grade statistics, and identifies grade-based academic risk.
+**Student:** Byusa Mukarage Martin De Poles  
+**Student ID:** 811201785
 
-## Compile and run (Ubuntu / WSL)
-```bash
+## Purpose
+
+This menu-driven C program manages a small academic dataset. It supports record creation and removal, sorting, searching, performance summaries, and a grade-based risk indicator.
+
+## Build and run
+
+Run these commands from this directory:
+
+\`\`\`sh
 gcc -std=c99 -Wall -Wextra -Werror -pedantic main.c -o academic_analysis
 ./academic_analysis
-```
-
-## Before running
-Replace `REPLACE_WITH_YOUR_STUDENT_ID` in `main.c` with your actual student ID.
+\`\`\`
 
 ## Features
+
 - Starts with 10 fictional student records.
-- Adds and removes records using dynamic allocation.
-- Rejects duplicate IDs and grades outside 0–100.
-- Displays records in a table.
-- Sorts by grade descending, name ascending, or ID ascending.
-- Calculates average and top-performing student.
-- Searches by ID or exact name (`strcmp`).
-- Uses pointer traversal.
-- Uses an array of function pointers for menu dispatch.
-- Generates a summary and custom Academic Risk Index.
+- Uses a dynamically allocated array and grows it with \`realloc\`.
+- Adds and removes records; duplicate IDs are rejected.
+- Validates grades to the inclusive range 0–100.
+- Sorts by grade, name, or ID; searches by ID or exact name.
+- Calculates average, highest and lowest grades, pass count, and below-pass count.
+- Uses pointer traversal and a function-pointer table for menu dispatch.
+- Releases allocated memory before exit.
 
-## Dataset and assumptions
-The initial dataset is fictional. The project uses 50 as its pass threshold. Grade below 50 is classified high risk, 50 to below 70 moderate risk, and 70–100 good standing. These are project assumptions, not official university rules.
+## Academic Risk Index
 
-## Memory
-`malloc` allocates the initial array, `realloc` grows it when needed and attempts to shrink it after removal, and `free` releases it at exit. Allocation failures are checked.
+The program calculates \`ARI = 100 - grade\`. The categories are coursework assumptions: high risk for grades below 50, moderate risk from 50 to below 70, and good standing from 70 to 100. These are not official ALU academic-risk rules. See [analysis_explanation.md](analysis_explanation.md).
+
+## Test evidence
+
+Run \`bash Project_2/tests/run_smoke_tests.sh\` from the repository root. It compiles all three programs and checks scripted operations, including a Project 1 add/remove/summary sequence. The automated checks do not replace manual testing of every menu option and invalid-input path.
