@@ -20,8 +20,9 @@ echo "[3/6] Compiling Project 3..."
 gcc -std=c99 -Wall -Wextra -Werror -pedantic "$P3/main.c" -o "$BUILD/iot_monitor"
 
 echo "[4/6] Project 1 add/remove/summary..."
-printf '2\n1\n811299999\nSmoke Test Student\nC Programming\n88\n2\n7\n811299999\n9\n10\n' \
+printf '1\n811299999\nSmoke Test Student\nC Programming\nnan\ninf\n-inf\n101\n88\n2\n7\n811299999\n9\n10\n' \
   | "$BUILD/academic_analysis" > "$RESULTS/project1.log"
+test "$(grep -c "Grade must be a number from 0 to 100." "$RESULTS/project1.log")" -eq 4
 grep -q "Student added." "$RESULTS/project1.log"
 grep -q "Student removed." "$RESULTS/project1.log"
 grep -q "ACADEMIC SUMMARY" "$RESULTS/project1.log"
