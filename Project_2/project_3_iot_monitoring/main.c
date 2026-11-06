@@ -8,7 +8,7 @@
 #include <time.h>
 #include <errno.h>
 
-#define STUDENT_ID "REPLACE_WITH_YOUR_STUDENT_ID"
+#define STUDENT_ID "811201785"
 #define NAME_SIZE 40
 #define TYPE_TEMPERATURE 1
 #define TYPE_PRESSURE 2
@@ -38,6 +38,7 @@ typedef struct Device
     int status; /* 0 = normal, 1 = alert */
     float previous_temperature;
     int has_previous_temperature;
+    unsigned int readings_generated;
 } Device;
 
 typedef struct DeviceList
@@ -176,6 +177,7 @@ static void register_device(DeviceList *list)
     device.status = 0;
     device.has_previous_temperature = 0;
     device.previous_temperature = 0.0f;
+    device.readings_generated = 0;
     device.reading.temperature = 0.0f;
 
     if (!reserve_devices(list, list->count + 1))
@@ -291,9 +293,11 @@ static void rapid_temperature_change_detector(Device *device,
             difference = -difference;
         if (difference > RAPID_CHANGE_LIMIT)
         {
+            device->status = 1;
             stats->rapid_change_alerts++;
             printf("CUSTOM CALLBACK ALERT: Device %d (%s) changed from %.2f C "
                    "to %.2f C; absolute change %.2f C exceeded %.2f C. "
+                   "Device status set to ALERT. "
                    "Callback: rapid_temperature_change_detector\n",
                    device->id, device->name, device->previous_temperature,
                    current, difference, RAPID_CHANGE_LIMIT);
@@ -360,31 +364,54 @@ static void generate_readings(DeviceList *list, MonitorStats *stats)
 
         if (ptr->type == TYPE_TEMPERATURE)
         {
-            /* Deliberately include occasional out-of-range readings. */
-            i = rand() % 5;
-            ptr->reading.temperature = (i == 0) ?
-                (float)(34 + rand() % 8) :
-                (float)(18 + rand() % 13);
+            if (ptr->readings_generated == 0)
+                ptr->reading.temperature = 22.0f;
+            else if (ptr->readings_generated == 1)
+                ptr->reading.temperature = 36.0f;
+            else
+            {
+                i = rand() % 5;
+                ptr->reading.temperature = (i == 0) ?
+                    (float)(34 + rand() % 8) :
+                    (float)(18 + rand() % 13);
+            }
             callback = temperature_monitor;
         }
         else if (ptr->type == TYPE_PRESSURE)
         {
-            i = rand() % 5;
-            ptr->reading.pressure = (i == 0) ?
-                (rand() % 2 ? 1080 + rand() % 30 : 900 + rand() % 40) :
-                950 + rand() % 101;
+            if (ptr->readings_generated == 0)
+                ptr->reading.pressure = 1000;
+            else if (ptr->readings_generated == 1)
+                ptr->reading.pressure = 1080;
+            else
+            {
+                i = rand() % 5;
+                ptr->reading.pressure = (i == 0) ?
+                    (rand() % 2 ? 1080 + rand() % 30 : 900 + rand() % 40) :
+                    950 + rand() % 101;
+            }
             callback = pressure_monitor;
         }
         else if (ptr->type == TYPE_BATTERY)
         {
-            i = rand() % 5;
-            ptr->reading.voltage = (i == 0) ?
-                (float)(2.7 + (rand() % 15) / 10.0) :
-                (float)(3.3 + (rand() % 10) / 10.0);
+            if (ptr->readings_generated == 0)
+                ptr->reading.voltage = 3.8f;
+            else if (ptr->readings_generated == 1)
+                ptr->reading.voltage = 2.8f;
+            else
+            {
+                i = rand() % 5;
+                ptr->reading.voltage = (i == 0) ?
+                    (float)(2.7 + (rand() % 15) / 10.0) :
+                    (float)(3.3 + (rand() % 10) / 10.0);
+            }
             callback = battery_monitor;
         }
         if (callback != NULL)
+        {
             process_device(ptr, callback, stats);
+            ptr->readings_generated++;
+        }
     }
 }
 
@@ -409,28 +436,46 @@ static void simulate_ten_readings(DeviceList *list, MonitorStats *stats)
         if (type == TYPE_TEMPERATURE)
         {
             int n = rand() % 7;
-            device->reading.temperature = (n == 0) ?
-                (float)(36 + rand() % 5) : (float)(20 + rand() % 9);
+            if (device->readings_generated == 0)
+                device->reading.temperature = 22.0f;
+            else if (device->readings_generated == 1)
+                device->reading.temperature = 36.0f;
+            else
+                device->reading.temperature = (n == 0) ?
+                    (float)(36 + rand() % 5) : (float)(20 + rand() % 9);
             callback = temperature_monitor;
         }
         else if (type == TYPE_PRESSURE)
         {
             int n = rand() % 7;
-            device->reading.pressure = (n == 0) ?
-                1080 + rand() % 30 : 970 + rand() % 61;
+            if (device->readings_generated == 0)
+                device->reading.pressure = 1000;
+            else if (device->readings_generated == 1)
+                device->reading.pressure = 1080;
+            else
+                device->reading.pressure = (n == 0) ?
+                    1080 + rand() % 30 : 970 + rand() % 61;
             callback = pressure_monitor;
         }
         else if (type == TYPE_BATTERY)
         {
             int n = rand() % 7;
-            device->reading.voltage = (n == 0) ?
-                (float)(2.8 + (rand() % 5) / 10.0) :
-                (float)(3.5 + (rand() % 6) / 10.0);
+            if (device->readings_generated == 0)
+                device->reading.voltage = 3.8f;
+            else if (device->readings_generated == 1)
+                device->reading.voltage = 2.8f;
+            else
+                device->reading.voltage = (n == 0) ?
+                    (float)(2.8 + (rand() % 5) / 10.0) :
+                    (float)(3.5 + (rand() % 6) / 10.0);
             callback = battery_monitor;
         }
         printf("Reading %d: ", reading_number + 1);
         if (callback != NULL)
+        {
             process_device(device, callback, stats);
+            device->readings_generated++;
+        }
     }
 }
 
