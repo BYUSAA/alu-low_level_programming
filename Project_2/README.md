@@ -44,3 +44,7 @@ The script compiles all three programs and checks scripted demonstrations. It sa
 ## Submission evidence
 
 The `sample_output.txt` files are console transcripts, not screenshots. Capture readable screenshots from the final program versions and use output from the final build. Do not report a test as passed unless it has actually been run.
+
+## Final submission checklist
+
+See [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) for the requirement map, recommended live demonstrations, genuine screenshot evidence list, and final review steps. It distinguishes existing implementation from evidence that still needs to be captured during a real run.
