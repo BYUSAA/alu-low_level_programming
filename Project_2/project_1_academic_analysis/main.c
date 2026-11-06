@@ -63,7 +63,11 @@ static int read_int(const char *prompt, int *value)
     while (1)
     {
         if (!read_line(prompt, buffer, sizeof(buffer)))
+        {
+            if (feof(stdin))
+                return 0;
             continue;
+        }
         errno = 0;
         parsed = strtol(buffer, &end, 10);
         if (buffer[0] == '\0' || *end != '\0' || errno == ERANGE ||
@@ -176,7 +180,8 @@ static void add_student(StudentList *list)
     char name[NAME_SIZE];
     char course[COURSE_SIZE];
 
-    read_int("Student ID: ", &student.id);
+    if (!read_int("Student ID: ", &student.id))
+        return;
     if (id_exists(list, student.id))
     {
         printf("Duplicate ID rejected.\n");
@@ -188,7 +193,8 @@ static void add_student(StudentList *list)
         printf("Name and course are required.\n");
         return;
     }
-    read_grade("Grade (0-100): ", &student.grade);
+    if (!read_grade("Grade (0-100): ", &student.grade))
+        return;
     strcpy(student.name, name);
     strcpy(student.course, course);
     if (!reserve_students(list, list->count + 1))
@@ -214,7 +220,8 @@ static void sort_students(StudentList *list)
         return;
     }
     printf("1. Grade (highest first)\n2. Name (A-Z)\n3. ID (lowest first)\n");
-    read_int("Sort choice: ", &choice);
+    if (!read_int("Sort choice: ", &choice))
+        return;
     if (choice < 1 || choice > 3)
     {
         printf("Invalid sort choice.\n");
@@ -286,9 +293,11 @@ static void search_student(StudentList *list)
     int found = 0;
 
     printf("1. Search by ID\n2. Search by exact name\n");
-    read_int("Search choice: ", &choice);
+    if (!read_int("Search choice: ", &choice))
+        return;
     if (choice == 1)
-        read_int("Student ID: ", &id);
+        if (!read_int("Student ID: ", &id))
+            return;
     else if (choice == 2)
     {
         if (!read_line("Exact name: ", name, sizeof(name)))
@@ -325,7 +334,8 @@ static void remove_student(StudentList *list)
         printf("No records to remove.\n");
         return;
     }
-    read_int("ID to remove: ", &id);
+    if (!read_int("ID to remove: ", &id))
+        return;
     for (index = 0; index < list->count; index++)
         if (list->items[index].id == id)
             break;
@@ -469,7 +479,8 @@ int main(void)
         printf("\nMAIN MENU\n");
         for (i = 0; i < sizeof(menu) / sizeof(menu[0]); i++)
             printf("%lu. %s\n", (unsigned long)(i + 1), labels[i]);
-        read_int("Choose an option: ", &choice);
+        if (!read_int("Choose an option: ", &choice))
+            break;
         if (choice < 1 || choice > 10)
         {
             printf("Choose a number from 1 to 10.\n");
