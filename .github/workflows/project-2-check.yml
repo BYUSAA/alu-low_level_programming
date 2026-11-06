@@ -1,0 +1,31 @@
+name: Project 2 C build and smoke checks
+
+on:
+  push:
+    paths:
+      - "Project_2/**"
+      - ".github/workflows/project-2-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install C compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc
+      - name: Compile and run all three projects
+        run: bash Project_2/tests/run_smoke_tests.sh
+      - name: Upload program transcripts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-2-smoke-test-logs
+          path: Project_2/test-results/
+          if-no-files-found: warn
