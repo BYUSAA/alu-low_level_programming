@@ -550,10 +550,12 @@ int main(void)
         printf("Choose an option: ");
         if (fgets(line, sizeof(line), stdin) == NULL)
             break;
+        errno = 0;
         selected = strtol(line, &end, 10);
-        if (end == line || (*end != '\n' && *end != '\0'))
+        if (end == line || (*end != '\n' && *end != '\0') ||
+            errno == ERANGE || selected < 1 || selected > 8)
         {
-            printf("Enter a valid menu number.\n");
+            printf("Enter a whole menu number from 1 to 8.\n");
             continue;
         }
         choice = (int)selected;
