@@ -11,12 +11,12 @@ This program accepts a paragraph, stores it in a dynamically growing text buffer
 
 Run these commands from this directory:
 
-\`\`\`sh
+```sh
 gcc -std=c99 -Wall -Wextra -Werror -pedantic main.c -o text_mining
 ./text_mining
-\`\`\`
+```
 
-Paste the prose from \`source_text.txt\`; do not paste the bibliographic heading lines. Enter a single period (\`.\`) on a line by itself to finish. The input-line buffer grows dynamically, so a long line is not split at a fixed 511-character boundary.
+Paste the prose from `source_text.txt`; do not paste the bibliographic heading lines. Enter a single period (`.`) on a line by itself to finish. The input-line buffer grows dynamically, so a long line is not split at a fixed 511-character boundary.
 
 ## Analysis features
 
@@ -30,14 +30,14 @@ A word is a contiguous run of alphabetic characters. Punctuation and whitespace 
 
 ## Custom analysis
 
-\`LDS = (distinct word count / total word count) × 100\`
+`LDS = (distinct word count / total word count) × 100`
 
 The score is the percentage of analyzed tokens that are distinct. It is not a complete measure of writing quality. See [analysis_explanation.md](analysis_explanation.md).
 
 ## Source
 
-The prose in \`source_text.txt\` is an excerpt from Charles Dickens's *A Tale of Two Cities* (1859), Book the First, Chapter I, “The Period”. It is public-domain text. The program accepts pasted text; it does not open the source file automatically.
+The prose in `source_text.txt` is an excerpt from Charles Dickens's *A Tale of Two Cities* (1859), Book the First, Chapter I, “The Period”. It is public-domain text. The program accepts pasted text; it does not open the source file automatically.
 
 ## Test evidence
 
-Run \`bash Project_2/tests/run_smoke_tests.sh\` from the repository root. It checks the supplied text, summary generation, and memory-address display.
+Run `bash Project_2/tests/run_smoke_tests.sh` from the repository root. It checks the supplied text, summary generation, and memory-address display.
