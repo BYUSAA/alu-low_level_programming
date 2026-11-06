@@ -1,5 +1,7 @@
+NOTE: This is an illustrative console transcript from an earlier run. Re-run the updated program to capture final output, including the separate rapid-change callback and ALERT status.
+
 ============================================================
-Student ID: REPLACE_WITH_YOUR_STUDENT_ID
+Student ID: 811201785
 Project: Dynamic IoT Event Monitoring and Callback Engine
 Custom Callback: Rapid Temperature Change Detector
 ============================================================
@@ -65,7 +67,7 @@ Reading 1: ALERT: Device 2001 (Room Temperature Sensor), 39.00 C; expected 18.0 
 Reading 2: NORMAL: Device 2002 (Water Pressure Sensor), 1012.00 kPa; callback: pressure_monitor
 Reading 3: NORMAL: Device 2003 (Battery Monitor), 3.70 V; callback: battery_monitor
 Reading 4: NORMAL: Device 2001 (Room Temperature Sensor), 28.00 C; callback: temperature_monitor
-CUSTOM CALLBACK ALERT: Device 2001 (Room Temperature Sensor) changed from 39.00 C to 28.00 C; change exceeded 5.00 C. Callback: rapid_temperature_change_detector
+CUSTOM CALLBACK ALERT: Device 2001 (Room Temperature Sensor) changed from 39.00 C to 28.00 C; absolute change 11.00 C exceeded 5.00 C. Device status set to ALERT. Callback: rapid_temperature_change_detector
 Reading 5: NORMAL: Device 2002 (Water Pressure Sensor), 1020.00 kPa; callback: pressure_monitor
 Reading 6: NORMAL: Device 2003 (Battery Monitor), 3.80 V; callback: battery_monitor
 Reading 7: NORMAL: Device 2001 (Room Temperature Sensor), 26.00 C; callback: temperature_monitor
