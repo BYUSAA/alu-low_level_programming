@@ -94,7 +94,11 @@ static int read_int(const char *prompt, int *value)
     while (1)
     {
         if (!read_line(prompt, line, sizeof(line)))
+        {
+            if (feof(stdin))
+                return 0;
             continue;
+        }
         errno = 0;
         parsed = strtol(line, &end, 10);
         if (line[0] == '\0' || *end != '\0' || errno == ERANGE ||
@@ -154,7 +158,8 @@ static void register_device(DeviceList *list)
     Device device;
     int type;
 
-    read_int("Device ID: ", &device.id);
+    if (!read_int("Device ID: ", &device.id))
+        return;
     if (device_id_exists(list, device.id))
     {
         printf("Duplicate device ID rejected.\n");
@@ -167,7 +172,8 @@ static void register_device(DeviceList *list)
         return;
     }
     printf("Device type:\n1. Temperature sensor\n2. Pressure sensor\n3. Battery voltage monitor\n");
-    read_int("Type: ", &type);
+    if (!read_int("Type: ", &type))
+        return;
     if (type < TYPE_TEMPERATURE || type > TYPE_BATTERY)
     {
         printf("Invalid device type.\n");
@@ -226,7 +232,8 @@ static void remove_device(DeviceList *list)
         printf("No devices to remove.\n");
         return;
     }
-    read_int("Device ID to remove: ", &id);
+    if (!read_int("Device ID to remove: ", &id))
+        return;
     for (index = 0; index < list->count; index++)
         if (list->items[index].id == id)
             break;
@@ -293,6 +300,18 @@ static void rapid_temperature_change_detector(Device *device,
             difference = -difference;
         if (difference > RAPID_CHANGE_LIMIT)
         {
+            /*
+             * record_result() has already counted this reading using the
+             * normal operating-range rule. If that rule passed, reclassify
+             * this reading as abnormal because the custom rule also fired.
+             */
+            if (!device->status)
+            {
+                if (stats->normal_readings > 0)
+                    stats->normal_readings--;
+                stats->abnormal_readings++;
+                stats->alerts_by_type[TYPE_TEMPERATURE - 1]++;
+            }
             device->status = 1;
             stats->rapid_change_alerts++;
             printf("CUSTOM CALLBACK ALERT: Device %d (%s) changed from %.2f C "
@@ -344,7 +363,8 @@ static void battery_monitor(Device *device, MonitorStats *stats)
 static void process_device(Device *device, DeviceCallback callback,
                            MonitorStats *stats)
 {
-    callback(device, stats);
+    if (device != NULL && callback != NULL && stats != NULL)
+        callback(device, stats);
 }
 
 static void generate_readings(DeviceList *list, MonitorStats *stats)
@@ -418,19 +438,39 @@ static void generate_readings(DeviceList *list, MonitorStats *stats)
 static void simulate_ten_readings(DeviceList *list, MonitorStats *stats)
 {
     int reading_number;
-    Device *device;
-    DeviceCallback callback;
     int type;
+    int type_index;
+    Device *device;
+    Device *representatives[TYPE_COUNT] = {NULL, NULL, NULL};
+    Device *ptr;
+    DeviceCallback callback;
 
     if (list->count == 0)
     {
         printf("Register devices before simulation.\n");
         return;
     }
-    printf("\nSimulating 10 readings across registered devices.\n");
+    /*
+     * Select one registered device of each supported type. This guarantees
+     * that the 10-reading demonstration exercises all three standard
+     * callbacks even when more than three devices are registered.
+     */
+    for (ptr = list->items; ptr < list->items + list->count; ptr++)
+        if (ptr->type >= TYPE_TEMPERATURE && ptr->type <= TYPE_BATTERY &&
+            representatives[ptr->type - 1] == NULL)
+            representatives[ptr->type - 1] = ptr;
+    for (type_index = 0; type_index < TYPE_COUNT; type_index++)
+    {
+        if (representatives[type_index] == NULL)
+        {
+            printf("Register at least one temperature, pressure, and battery device before the 10-reading simulation.\n");
+            return;
+        }
+    }
+    printf("\nSimulating 10 readings across all three device types.\n");
     for (reading_number = 0; reading_number < 10; reading_number++)
     {
-        device = &list->items[(size_t)reading_number % list->count];
+        device = representatives[reading_number % TYPE_COUNT];
         callback = NULL;
         type = device->type;
         if (type == TYPE_TEMPERATURE)
@@ -485,6 +525,11 @@ static void display_alert_status(DeviceList *list)
     int alerts = 0;
 
     printf("\nCURRENT DEVICE ALERTS\n");
+    if (list->count == 0)
+    {
+        printf("No devices are registered.\n");
+        return;
+    }
     for (ptr = list->items; ptr < list->items + list->count; ptr++)
     {
         if (ptr->status)
