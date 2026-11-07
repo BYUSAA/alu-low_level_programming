@@ -90,7 +90,11 @@ static int read_grade(const char *prompt, double *value)
     while (1)
     {
         if (!read_line(prompt, buffer, sizeof(buffer)))
+        {
+            if (feof(stdin))
+                return 0;
             continue;
+        }
         errno = 0;
         parsed = strtod(buffer, &end);
         if (buffer[0] == '\0' || *end != '\0' || errno == ERANGE || !isfinite(parsed) ||
@@ -292,12 +296,19 @@ static void search_student(StudentList *list)
     Student *ptr;
     int found = 0;
 
+    if (list->count == 0)
+    {
+        printf("No student records are available.\n");
+        return;
+    }
     printf("1. Search by ID\n2. Search by exact name\n");
     if (!read_int("Search choice: ", &choice))
         return;
     if (choice == 1)
+    {
         if (!read_int("Student ID: ", &id))
             return;
+    }
     else if (choice == 2)
     {
         if (!read_line("Exact name: ", name, sizeof(name)))
