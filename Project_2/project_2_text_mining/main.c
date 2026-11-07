@@ -303,8 +303,10 @@ static void sort_word_statistics(TextData *data)
     printf("Sort choice: ");
     if (fgets(line, sizeof(line), stdin) == NULL)
         return;
+    errno = 0;
     parsed = strtol(line, &end, 10);
-    if (end == line || (*end != '\n' && *end != '\0'))
+    if (end == line || (*end != '\n' && *end != '\0') ||
+        errno == ERANGE || (parsed != 1 && parsed != 2))
     {
         printf("Invalid choice.\n");
         return;
@@ -342,14 +344,30 @@ static void search_word(TextData *data)
 {
     char query[WORD_SIZE];
     size_t i;
-    size_t j;
+    int ch;
 
-    printf("Enter word to search: ");
+    printf("Enter word to search (maximum 39 characters): ");
     if (fgets(query, sizeof(query), stdin) == NULL)
         return;
+    if (strchr(query, '\n') == NULL && !feof(stdin))
+    {
+        ch = getchar();
+        if (ch != '\n' && ch != EOF)
+        {
+            while (ch != '\n' && ch != EOF)
+                ch = getchar();
+            printf("Search term is too long; no search was performed.\n");
+            return;
+        }
+    }
     query[strcspn(query, "\n")] = '\0';
-    for (j = 0; query[j] != '\0'; j++)
-        query[j] = (char)tolower((unsigned char)query[j]);
+    for (i = 0; query[i] != '\0'; i++)
+        query[i] = (char)tolower((unsigned char)query[i]);
+    if (query[0] == '\0')
+    {
+        printf("Enter a non-empty word.\n");
+        return;
+    }
     for (i = 0; i < data->distinct_words; i++)
     {
         if (strcmp(query, data->stats[i].name) == 0)
@@ -472,10 +490,12 @@ int main(void)
         printf("Choose an option: ");
         if (fgets(menu_line, sizeof(menu_line), stdin) == NULL)
             break;
+        errno = 0;
         selected = strtol(menu_line, &end, 10);
-        if (end == menu_line || (*end != '\n' && *end != '\0'))
+        if (end == menu_line || (*end != '\n' && *end != '\0') ||
+            errno == ERANGE || selected < 1 || selected > 9)
         {
-            printf("Enter a valid menu number.\n");
+            printf("Enter a valid menu number from 1 to 9.\n");
             continue;
         }
         choice = (int)selected;
