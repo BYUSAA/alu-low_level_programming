@@ -7,6 +7,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#ifndef ELFOSABI_SORTIX
+#define ELFOSABI_SORTIX 53
+#endif
+
 /**
  * write_error_text - writes an error message to standard error
  * @text: text to write
@@ -82,18 +86,12 @@ static const char *elf_type(unsigned int type)
 {
 	switch (type)
 	{
-	case ET_NONE:
-		return ("NONE (No file type)");
-	case ET_REL:
-		return ("REL (Relocatable file)");
-	case ET_EXEC:
-		return ("EXEC (Executable file)");
-	case ET_DYN:
-		return ("DYN (Shared object file)");
-	case ET_CORE:
-		return ("CORE (Core file)");
-	default:
-		return ("UNKNOWN");
+	case ET_NONE: return ("NONE (No file type)");
+	case ET_REL: return ("REL (Relocatable file)");
+	case ET_EXEC: return ("EXEC (Executable file)");
+	case ET_DYN: return ("DYN (Shared object file)");
+	case ET_CORE: return ("CORE (Core file)");
+	default: return ("UNKNOWN");
 	}
 }
 
@@ -105,50 +103,29 @@ static const char *elf_type(unsigned int type)
  */
 static const char *elf_abi(unsigned int abi)
 {
-	if (abi == 53)
-		return ("UNIX - Sortix");
 	switch (abi)
 	{
-	case ELFOSABI_NONE:
-		return ("UNIX - System V");
-	case ELFOSABI_HPUX:
-		return ("UNIX - HP-UX");
-	case ELFOSABI_NETBSD:
-		return ("UNIX - NetBSD");
-	case ELFOSABI_GNU:
-		return ("UNIX - GNU");
-	case 4:
-		return ("GNU/Hurd");
-	case ELFOSABI_SOLARIS:
-		return ("UNIX - Solaris");
-	case ELFOSABI_AIX:
-		return ("UNIX - AIX");
-	case ELFOSABI_IRIX:
-		return ("UNIX - IRIX");
-	case ELFOSABI_FREEBSD:
-		return ("UNIX - FreeBSD");
-	case ELFOSABI_TRU64:
-		return ("UNIX - TRU64");
-	case ELFOSABI_MODESTO:
-		return ("Novell - Modesto");
-	case ELFOSABI_OPENBSD:
-		return ("UNIX - OpenBSD");
-	case 13:
-		return ("VMS - OpenVMS");
-	case 14:
-		return ("HP - Non-Stop Kernel");
-	case 15:
-		return ("AROS");
-	case 16:
-		return ("FenixOS");
-	case ELFOSABI_ARM_AEABI:
-		return ("ARM");
-	case ELFOSABI_ARM:
-		return ("ARM");
-	case ELFOSABI_STANDALONE:
-		return ("Standalone App");
-	default:
-		return (NULL);
+	case ELFOSABI_NONE: return ("UNIX - System V");
+	case ELFOSABI_HPUX: return ("UNIX - HP-UX");
+	case ELFOSABI_NETBSD: return ("UNIX - NetBSD");
+	case ELFOSABI_GNU: return ("UNIX - GNU");
+	case 4: return ("GNU/Hurd");
+	case ELFOSABI_SOLARIS: return ("UNIX - Solaris");
+	case ELFOSABI_AIX: return ("UNIX - AIX");
+	case ELFOSABI_IRIX: return ("UNIX - IRIX");
+	case ELFOSABI_FREEBSD: return ("UNIX - FreeBSD");
+	case ELFOSABI_TRU64: return ("UNIX - TRU64");
+	case ELFOSABI_MODESTO: return ("Novell - Modesto");
+	case ELFOSABI_OPENBSD: return ("UNIX - OpenBSD");
+	case 13: return ("VMS - OpenVMS");
+	case 14: return ("HP - Non-Stop Kernel");
+	case 15: return ("AROS");
+	case 16: return ("FenixOS");
+	case ELFOSABI_SORTIX: return ("UNIX - Sortix");
+	case ELFOSABI_ARM_AEABI: return ("ARM");
+	case ELFOSABI_ARM: return ("ARM");
+	case ELFOSABI_STANDALONE: return ("Standalone App");
+	default: return (NULL);
 	}
 }
 
@@ -205,43 +182,54 @@ static int load_header(int fd, const char *filename,
 }
 
 /**
- * display_header - prints the requested fields from a validated ELF header
+ * print_class_data - prints the ELF class and byte order
  * @header: complete ELF header bytes
  *
  * Return: void
  */
-static void display_header(const unsigned char *header)
+static void print_class_data(const unsigned char *header)
 {
-	int little_endian;
-	unsigned int entry_size;
-	unsigned int type;
-	unsigned int version;
-	uint64_t entry;
-	const char *abi_name;
-
-	little_endian = header[EI_DATA] == ELFDATA2LSB;
-	entry_size = header[EI_CLASS] == ELFCLASS32 ? 4 : 8;
-	type = (unsigned int)decode_value(header +
-		offsetof(Elf32_Ehdr, e_type), 2, little_endian);
-	version = (unsigned int)decode_value(header +
-		offsetof(Elf32_Ehdr, e_version), 4, little_endian);
-	entry = decode_value(header + offsetof(Elf32_Ehdr, e_entry),
-		entry_size, little_endian);
-	printf("ELF Header:\n");
-	print_magic(header);
+	printf("  Class:                             ");
 	if (header[EI_CLASS] == ELFCLASS32)
-		printf("  Class:                             ELF32\n");
+		printf("ELF32\n");
 	else
-		printf("  Class:                             ELF64\n");
+		printf("ELF64\n");
 	printf("  Data:                              2's complement, ");
-	if (little_endian)
+	if (header[EI_DATA] == ELFDATA2LSB)
 		printf("little endian\n");
 	else
 		printf("big endian\n");
+}
+
+/**
+ * print_version - prints the ELF header version
+ * @header: complete ELF header bytes
+ *
+ * Return: void
+ */
+static void print_version(const unsigned char *header)
+{
+	unsigned int version;
+
+	version = (unsigned int)decode_value(header +
+		offsetof(Elf32_Ehdr, e_version), 4,
+		header[EI_DATA] == ELFDATA2LSB);
 	if (version == EV_CURRENT)
 		printf("  Version:                           %u (current)\n", version);
 	else
 		printf("  Version:                           %u\n", version);
+}
+
+/**
+ * print_abi - prints the ELF operating-system ABI and ABI version
+ * @header: complete ELF header bytes
+ *
+ * Return: void
+ */
+static void print_abi(const unsigned char *header)
+{
+	const char *abi_name;
+
 	abi_name = elf_abi(header[EI_OSABI]);
 	if (abi_name == NULL)
 		printf("  OS/ABI:                            <unknown: %02x>\n",
@@ -249,8 +237,45 @@ static void display_header(const unsigned char *header)
 	else
 		printf("  OS/ABI:                            %s\n", abi_name);
 	printf("  ABI Version:                       %u\n", header[EI_ABIVERSION]);
+}
+
+/**
+ * print_type_entry - prints the ELF type and entry point
+ * @header: complete ELF header bytes
+ *
+ * Return: void
+ */
+static void print_type_entry(const unsigned char *header)
+{
+	unsigned int entry_size;
+	unsigned int type;
+	uint64_t entry;
+	int little_endian;
+
+	little_endian = header[EI_DATA] == ELFDATA2LSB;
+	entry_size = header[EI_CLASS] == ELFCLASS32 ? 4 : 8;
+	type = (unsigned int)decode_value(header +
+		offsetof(Elf32_Ehdr, e_type), 2, little_endian);
+	entry = decode_value(header + offsetof(Elf32_Ehdr, e_entry),
+		entry_size, little_endian);
 	printf("  Type:                              %s\n", elf_type(type));
 	printf("  Entry point address:               0x%" PRIx64 "\n", entry);
+}
+
+/**
+ * display_header - prints the requested fields from a validated ELF header
+ * @header: complete ELF header bytes
+ *
+ * Return: void
+ */
+static void display_header(const unsigned char *header)
+{
+	printf("ELF Header:\n");
+	print_magic(header);
+	print_class_data(header);
+	print_version(header);
+	print_abi(header);
+	print_type_entry(header);
 }
 
 /**
