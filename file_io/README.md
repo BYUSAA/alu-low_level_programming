@@ -80,8 +80,9 @@ The cp and elf_header programs provide their own main functions.
 - cp requests rw-rw-r-- (0664) for a newly created destination. Existing
   destination permissions are preserved.
 - The ELF reader reads the identification bytes first and the remainder of
-  the class-specific header second. It decodes the type, version, and entry
-  point according to the ELF file's byte order.
+  the class-specific header second. It recognizes common OS/ABI values,
+  including Sortix, and decodes the type, version, and entry point according
+  to the ELF file's byte order.
 
 The mandatory source files follow Betty documentation and style conventions,
 avoid global variables, and use no more than five functions per source file.
