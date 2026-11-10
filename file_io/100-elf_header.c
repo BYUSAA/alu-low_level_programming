@@ -8,6 +8,30 @@
 #include <unistd.h>
 
 /**
+ * write_error_text - writes an error message to standard error
+ * @text: text to write
+ *
+ * Return: void
+ */
+static void write_error_text(const char *text)
+{
+	size_t length;
+	ssize_t written;
+
+	length = 0;
+	while (text[length] != '\0')
+		length++;
+	while (length > 0)
+	{
+		written = write(STDERR_FILENO, text, length);
+		if (written <= 0)
+			return;
+		text += written;
+		length -= (size_t)written;
+	}
+}
+
+/**
  * fail - displays an ELF processing error and exits
  * @filename: file that caused the error
  * @reason: explanation of the error
@@ -16,7 +40,11 @@
  */
 static void fail(const char *filename, const char *reason)
 {
-	fprintf(stderr, "Error: %s: %s\n", filename, reason);
+	write_error_text("Error: ");
+	write_error_text(filename);
+	write_error_text(": ");
+	write_error_text(reason);
+	write_error_text("\n");
 	exit(98);
 }
 
@@ -228,7 +256,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: elf_header elf_filename\n");
+		write_error_text("Usage: elf_header elf_filename\n");
 		return (98);
 	}
 	fd = open(argv[1], O_RDONLY);
