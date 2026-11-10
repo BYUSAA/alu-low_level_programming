@@ -222,8 +222,8 @@ static void display_header(const unsigned char *header)
 	else
 		printf("  Class:                             ELF64\n");
 	if (little_endian)
-		printf("  Data:                              2's complement, "
-			"little endian\n");
+		printf("  Data:                              2's complement, ");
+		printf("little endian\n");
 	else
 		printf("  Data:                              2's complement, big endian\n");
 	if (version == EV_CURRENT)
