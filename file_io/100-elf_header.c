@@ -57,7 +57,7 @@ static void fail(const char *filename, const char *reason)
  * Return: decoded unsigned integer
  */
 static uint64_t decode_value(const unsigned char *data,
-				      unsigned int length, int little_endian)
+			     unsigned int length, int little_endian)
 {
 	uint64_t value;
 	unsigned int index;
@@ -105,6 +105,8 @@ static const char *elf_type(unsigned int type)
  */
 static const char *elf_abi(unsigned int abi)
 {
+	if (abi == 53)
+		return ("UNIX - Sortix");
 	switch (abi)
 	{
 	case ELFOSABI_NONE:
@@ -115,6 +117,8 @@ static const char *elf_abi(unsigned int abi)
 		return ("UNIX - NetBSD");
 	case ELFOSABI_GNU:
 		return ("UNIX - GNU");
+	case 4:
+		return ("GNU/Hurd");
 	case ELFOSABI_SOLARIS:
 		return ("UNIX - Solaris");
 	case ELFOSABI_AIX:
@@ -129,6 +133,14 @@ static const char *elf_abi(unsigned int abi)
 		return ("Novell - Modesto");
 	case ELFOSABI_OPENBSD:
 		return ("UNIX - OpenBSD");
+	case 13:
+		return ("VMS - OpenVMS");
+	case 14:
+		return ("HP - Non-Stop Kernel");
+	case 15:
+		return ("AROS");
+	case 16:
+		return ("FenixOS");
 	case ELFOSABI_ARM_AEABI:
 		return ("ARM");
 	case ELFOSABI_ARM:
@@ -161,7 +173,7 @@ static void print_magic(const unsigned char *header)
 }
 
 /**
- * load_header - reads and validates the ELF identification and full header
+ * load_header - reads and validates the identification and complete ELF header
  * @fd: open file descriptor
  * @filename: file name used in error messages
  * @header: buffer that receives the complete header
@@ -178,7 +190,7 @@ static int load_header(int fd, const char *filename,
 	if (amount != EI_NIDENT)
 		fail(filename, "cannot read a complete ELF identification header");
 	if (header[EI_MAG0] != ELFMAG0 || header[EI_MAG1] != ELFMAG1 ||
-		header[EI_MAG2] != ELFMAG2 || header[EI_MAG3] != ELFMAG3)
+	    header[EI_MAG2] != ELFMAG2 || header[EI_MAG3] != ELFMAG3)
 		fail(filename, "not an ELF file: invalid magic bytes");
 	if (header[EI_CLASS] != ELFCLASS32 && header[EI_CLASS] != ELFCLASS64)
 		fail(filename, "unsupported or invalid ELF class");
@@ -221,11 +233,11 @@ static void display_header(const unsigned char *header)
 		printf("  Class:                             ELF32\n");
 	else
 		printf("  Class:                             ELF64\n");
+	printf("  Data:                              2's complement, ");
 	if (little_endian)
-		printf("  Data:                              2's complement, ");
 		printf("little endian\n");
 	else
-		printf("  Data:                              2's complement, big endian\n");
+		printf("big endian\n");
 	if (version == EV_CURRENT)
 		printf("  Version:                           %u (current)\n", version);
 	else
@@ -233,7 +245,7 @@ static void display_header(const unsigned char *header)
 	abi_name = elf_abi(header[EI_OSABI]);
 	if (abi_name == NULL)
 		printf("  OS/ABI:                            <unknown: %02x>\n",
-			header[EI_OSABI]);
+		       header[EI_OSABI]);
 	else
 		printf("  OS/ABI:                            %s\n", abi_name);
 	printf("  ABI Version:                       %u\n", header[EI_ABIVERSION]);
