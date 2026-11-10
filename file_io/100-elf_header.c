@@ -86,12 +86,88 @@ static const char *elf_type(unsigned int type)
 {
 	switch (type)
 	{
-	case ET_NONE: return ("NONE (No file type)");
-	case ET_REL: return ("REL (Relocatable file)");
-	case ET_EXEC: return ("EXEC (Executable file)");
-	case ET_DYN: return ("DYN (Shared object file)");
-	case ET_CORE: return ("CORE (Core file)");
-	default: return ("UNKNOWN");
+	case ET_NONE:
+		return ("NONE (No file type)");
+	case ET_REL:
+		return ("REL (Relocatable file)");
+	case ET_EXEC:
+		return ("EXEC (Executable file)");
+	case ET_DYN:
+		return ("DYN (Shared object file)");
+	case ET_CORE:
+		return ("CORE (Core file)");
+	default:
+		return ("UNKNOWN");
+	}
+}
+
+/**
+ * elf_abi_standard - returns names for common ELF operating-system ABIs
+ * @abi: ELF OS/ABI value
+ *
+ * Return: ABI name, or NULL when the value is not handled here
+ */
+static const char *elf_abi_standard(unsigned int abi)
+{
+	switch (abi)
+	{
+	case ELFOSABI_NONE:
+		return ("UNIX - System V");
+	case ELFOSABI_HPUX:
+		return ("UNIX - HP-UX");
+	case ELFOSABI_NETBSD:
+		return ("UNIX - NetBSD");
+	case ELFOSABI_GNU:
+		return ("UNIX - GNU");
+	case 4:
+		return ("GNU/Hurd");
+	case ELFOSABI_SOLARIS:
+		return ("UNIX - Solaris");
+	case ELFOSABI_AIX:
+		return ("UNIX - AIX");
+	case ELFOSABI_IRIX:
+		return ("UNIX - IRIX");
+	case ELFOSABI_FREEBSD:
+		return ("UNIX - FreeBSD");
+	case ELFOSABI_TRU64:
+		return ("UNIX - TRU64");
+	case ELFOSABI_MODESTO:
+		return ("Novell - Modesto");
+	case ELFOSABI_OPENBSD:
+		return ("UNIX - OpenBSD");
+	default:
+		return (NULL);
+	}
+}
+
+/**
+ * elf_abi_extended - returns names for additional ELF operating-system ABIs
+ * @abi: ELF OS/ABI value
+ *
+ * Return: ABI name, or NULL when the value is not handled here
+ */
+static const char *elf_abi_extended(unsigned int abi)
+{
+	switch (abi)
+	{
+	case 13:
+		return ("VMS - OpenVMS");
+	case 14:
+		return ("HP - Non-Stop Kernel");
+	case 15:
+		return ("AROS");
+	case 16:
+		return ("FenixOS");
+	case ELFOSABI_SORTIX:
+		return ("UNIX - Sortix");
+	case ELFOSABI_ARM_AEABI:
+		return ("ARM");
+	case ELFOSABI_ARM:
+		return ("ARM");
+	case ELFOSABI_STANDALONE:
+		return ("Standalone App");
+	default:
+		return (NULL);
 	}
 }
 
@@ -103,30 +179,12 @@ static const char *elf_type(unsigned int type)
  */
 static const char *elf_abi(unsigned int abi)
 {
-	switch (abi)
-	{
-	case ELFOSABI_NONE: return ("UNIX - System V");
-	case ELFOSABI_HPUX: return ("UNIX - HP-UX");
-	case ELFOSABI_NETBSD: return ("UNIX - NetBSD");
-	case ELFOSABI_GNU: return ("UNIX - GNU");
-	case 4: return ("GNU/Hurd");
-	case ELFOSABI_SOLARIS: return ("UNIX - Solaris");
-	case ELFOSABI_AIX: return ("UNIX - AIX");
-	case ELFOSABI_IRIX: return ("UNIX - IRIX");
-	case ELFOSABI_FREEBSD: return ("UNIX - FreeBSD");
-	case ELFOSABI_TRU64: return ("UNIX - TRU64");
-	case ELFOSABI_MODESTO: return ("Novell - Modesto");
-	case ELFOSABI_OPENBSD: return ("UNIX - OpenBSD");
-	case 13: return ("VMS - OpenVMS");
-	case 14: return ("HP - Non-Stop Kernel");
-	case 15: return ("AROS");
-	case 16: return ("FenixOS");
-	case ELFOSABI_SORTIX: return ("UNIX - Sortix");
-	case ELFOSABI_ARM_AEABI: return ("ARM");
-	case ELFOSABI_ARM: return ("ARM");
-	case ELFOSABI_STANDALONE: return ("Standalone App");
-	default: return (NULL);
-	}
+	const char *name;
+
+	name = elf_abi_standard(abi);
+	if (name != NULL)
+		return (name);
+	return (elf_abi_extended(abi));
 }
 
 /**
